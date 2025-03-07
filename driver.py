@@ -1,9 +1,20 @@
-from time import sleep
+from time import sleep, time_ns
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.action_chains import ActionChains # Sends generic (non-element specific) actions
+
+def get_words(driver: webdriver) -> iter:
+    words = driver.find_elements(By.CSS_SELECTOR, "div.word")
+    return iter(words)
+
+def test_over(driver: webdriver) -> bool:
+    words = driver.find_elements(By.CSS_SELECTOR, "div.word")
+    if words == []:
+        return True
+    else: 
+        return False
 
 if __name__ == "__main__":
     service = Service(executable_path="chromedriver.exe")
@@ -20,13 +31,35 @@ if __name__ == "__main__":
 
     # give the site a moment to refresh
     sleep(0.5)
-    word = driver.find_element(By.CLASS_NAME, "word").text
 
+
+    initial_time = time_ns()
+    running = True
+    word_iterator = get_words(driver)
     action = ActionChains(driver)
-    action.send_keys(word)
-    action.perform()
+    wpm = 100
+    fudge = 20
+    delay = (60/(wpm-fudge))
+    
+    while running:
+        try:
+            action.send_keys(next(word_iterator).text)
+            action.send_keys(" ")
+            action.perform()
+        except StopIteration:
+            word_iterator = get_words(driver)
+        except Exception as e:
+            # Generic Exception, usually the typing page is dead 
+            print(f"{e}")
+            running = False
 
-    # Let me see the results
-    sleep(3)
+        # print(f"Remaining Time: {(time_ns()-initial_time)*1e-9}s")
 
+        if (time_ns() - initial_time)*1e-9 > 29.5:
+            running = False
+        if test_over(driver):
+            print("test_over :(")
+
+        sleep(delay)
+    sleep(20)
     driver.close()
