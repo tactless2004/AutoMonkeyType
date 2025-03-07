@@ -37,21 +37,15 @@ if __name__ == "__main__":
     running = True
     word_iterator = get_words(driver)
     action = ActionChains(driver)
-    wpm = 200
-    fudge = 0
+    wpm = 100
+    fudge = 20
     delay = (60/(wpm-fudge))
-
-    # manually setting delay to decide fudge factor
-    delay = 0.25
-    stop_time = 30 - delay if delay <= 0.25 else 30 - (2*delay)
-    print("SENT:", end = "")
+    
     while running:
         try:
-            word = next(word_iterator).text
-            action.send_keys(word)
+            action.send_keys(next(word_iterator).text)
             action.send_keys(" ")
             action.perform()
-            print(f"{word} ", end = " ")
         except StopIteration:
             word_iterator = get_words(driver)
         except Exception as e:
@@ -61,8 +55,10 @@ if __name__ == "__main__":
 
         # print(f"Remaining Time: {(time_ns()-initial_time)*1e-9}s")
 
-        if (time_ns() - initial_time)*1e-9 > stop_time or test_over(driver):
+        if (time_ns() - initial_time)*1e-9 > 29.5:
             running = False
+        if test_over(driver):
+            print("test_over :(")
 
         sleep(delay)
     sleep(20)
