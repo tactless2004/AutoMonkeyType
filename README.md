@@ -2,7 +2,7 @@
 
 Auto Monkey Type is a python program using Selenium to achieve an impossibly high WPM.
 
-![type monkey high wpm image](docs/monkeytype.png)
+![type monkey high wpm image](docs/monkeytype_inf.png)
 
 ## ✅Setup
 
