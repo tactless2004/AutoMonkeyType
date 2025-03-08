@@ -90,5 +90,5 @@ if __name__ == "__main__":
 
         sleep(delay)
 
-    sleep(3)
+    sleep(2)
     driver.close()
