@@ -1,9 +1,6 @@
 from time import sleep, time_ns
-import argparse
-from word_buffer import buf
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains # Sends generic (non-element specific) actions
 
