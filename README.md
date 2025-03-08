@@ -11,16 +11,14 @@ Auto Monkey Type is a python program using Selenium to achieve an impossibly hig
 pip install selenium
 ```
 2. Install [Chrome Web Driver](https://googlechromelabs.github.io/chrome-for-testing/#stable) or the equivalent for your chosen browser, my implementation uses chrome, but Selenium supports: Google Chrome, Microsoft Edge, Mozilla Firefox, Apple Safari, and even Internet Explorer.
-<br>
 3. Put the Chrome Web Driver executable (or your browser specific driver) in the project directory.
-
 4. (OPTIONAL) The lines:
 ``` python
     # selenium setup
     service = Service(executable_path="chromedriver.exe")
     driver = webdriver.Chrome(service=service)
 ```
-need to be modified if you are using a different browser than chrome.
+need to be modified if you are using a different browser than Chrome.
 
 ## Usage
 
