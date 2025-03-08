@@ -8,15 +8,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains # Sends generic (non-element specific) actions
 
 def get_words(driver: webdriver) -> iter:
-    words = driver.find_elements(By.CSS_SELECTOR, "div.word")
-    return iter([word.text for word in words if word.get_attribute("class") != "word typed"])
-
-            
+    return iter([word.text for word in driver.find_elements(By.CSS_SELECTOR, "div.word") if word.get_attribute("class") != "word typed"])
 
 if __name__ == "__main__":
     # selenium setup
-    service = Service(executable_path="chromedriver.exe")
-    driver = webdriver.Chrome(service=service)
+    driver = webdriver.Chrome(service=Service(executable_path="chromedriver.exe"))
     driver.get("https://monkeytype.com/")
 
     # Let the page load
@@ -39,9 +35,7 @@ if __name__ == "__main__":
 
     while running:
         try:
-            word = next(word_iterator)
-            action.send_keys(word)
-            action.send_keys(" ")
+            action.send_keys(f"{next(word_iterator)} ")
             action.perform()
         except StopIteration:
             word_iterator = get_words(driver)
@@ -51,9 +45,6 @@ if __name__ == "__main__":
             print(f"{e}")
             running = False
 
-        # Check if its been > 30 seconds.
-        if (time_ns() - initial_time)*1e-9 > stop_time:
-            running = False
 
 
     sleep(30)
